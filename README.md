@@ -1,6 +1,9 @@
 # tic-tac-toe
 
-Tic-Tac-Toe game created following tutorial. 
+Tic-Tac-Toe game created here. 
 
-A lot of CSS used here. 
-I still need to add some JS to add functionality to the RESTART button.
+A lot of CSS used. 
+JS functions used to add game logic. 
+
+Enjoyed this one. 
+Might come back to it to change colors. 
