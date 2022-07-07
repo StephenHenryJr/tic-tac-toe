@@ -2,6 +2,7 @@ const cellElements = document.querySelectorAll('[data-cell');
 const board = document.getElementById('board');
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
 const winningMessageElement = document.getElementById('winningMessage');
+const restartButton = document.getElementById('restartButton')
 
 const xClass = 'x';
 const oClass = 'o';
@@ -19,35 +20,55 @@ let oTurn;
 
 
 startGame()
+restartButton.addEventListener('click', startGame)
 // Adds event listener to every cell but will only fire once. 
 // Once clicked you cannot trigger event again. 
 // Runs function to set class on the board
 function startGame() {
     oTurn = false;
     cellElements.forEach(cell => {
-        cell.addEventListener('click', handleClick, {once: true})
+        cell.classList.remove(xClass)
+        cell.classList.remove(oClass)
+        cell.removeEventListener('click', handleClick)
+        cell.addEventListener('click', handleClick, {
+            once: true
+        })
     })
     setBoardHoverClass();
+    winningMessageElement.classList.remove('show')
 }
 
 function handleClick(e) {
     const cell = e.target;
     const currentClass = oTurn ? oClass : xClass;
     placeMark(cell, currentClass);
-    if(checkWin(currentClass)) {
+    if (checkWin(currentClass)) {
         endGame(false);
+    } else if (isDraw()) {
+        endGame(true)
+    } else {
+        swapTurns();
+        setBoardHoverClass();
     }
-    swapTurns();
-    setBoardHoverClass();
+
 }
 
 function endGame(draw) {
-    if(draw) {
-
-    }else {
+    if (draw) {
+        winningMessageTextElement.innerText = 'Draw!'
+    } else {
         winningMessageTextElement.innerHTML = `${oTurn ? "O's" : "X's"} Win!`
     }
     winningMessageElement.classList.add('show')
+}
+
+//checking if every cell has been filled by checking if cell has either or classlist of X or O
+//if every cell has a classlist then we want to return true, naturally 
+//cellElements doesn't actually have a .every() method so you can use destructuring as we did below
+function isDraw() {
+    return [...cellElements].every(cell => {
+        return cell.classList.contains(xClass) || cell.classList.contains(oClass)
+    })
 }
 
 // This simply adds the marker in the game by adding the currentClass to the cell
@@ -67,7 +88,7 @@ function swapTurns() {
 function setBoardHoverClass() {
     board.classList.remove(xClass);
     board.classList.remove(oClass);
-    if(oTurn) {
+    if (oTurn) {
         board.classList.add(oClass)
     } else {
         board.classList.add(xClass)
@@ -82,4 +103,3 @@ function checkWin(currentClass) {
         })
     })
 }
-
