@@ -21,9 +21,12 @@ let oTurn;
 
 startGame()
 restartButton.addEventListener('click', startGame)
+
+// First removes any classes and the event listener from the cells
 // Adds event listener to every cell but will only fire once. 
 // Once clicked you cannot trigger event again. 
 // Runs function to set class on the board
+// Removed winning message background by removing class of .show
 function startGame() {
     oTurn = false;
     cellElements.forEach(cell => {
@@ -38,6 +41,9 @@ function startGame() {
     winningMessageElement.classList.remove('show')
 }
 
+// cell variable captures any cell we've clicked on
+// currentClass is either set to oClass or xClass depending on who's turn it is
+// by default oturn is set to false so our first marker will be X
 function handleClick(e) {
     const cell = e.target;
     const currentClass = oTurn ? oClass : xClass;
@@ -53,6 +59,8 @@ function handleClick(e) {
 
 }
 
+// function to end game and determine result 
+// class of .show added to our winningMessageElement so make it appear
 function endGame(draw) {
     if (draw) {
         winningMessageTextElement.innerText = 'Draw!'
@@ -63,8 +71,8 @@ function endGame(draw) {
 }
 
 //checking if every cell has been filled by checking if cell has either or classlist of X or O
-//if every cell has a classlist then we want to return true, naturally 
 //cellElements doesn't actually have a .every() method so you can use destructuring as we did below
+//if every cell has a classlist then we want to return true, naturally 
 function isDraw() {
     return [...cellElements].every(cell => {
         return cell.classList.contains(xClass) || cell.classList.contains(oClass)
@@ -77,8 +85,8 @@ function placeMark(cell, currentClass) {
     cell.classList.add(currentClass)
 }
 
-// What this does is simply set oTurn to the opposite which in this case is True
-// By doing this, the currentClass is changed from X to O
+// What this does is simply set oTurn to the opposite
+// Since defauly for O is false, the currentClass is changed from X to O and so on...
 function swapTurns() {
     oTurn = !oTurn;
 }
@@ -95,7 +103,9 @@ function setBoardHoverClass() {
     }
 }
 
-
+// Tricky one here, first we look at the combinations in our winning combo array
+// will return true by checking if all the cells in in any of the combinations are all filled with our current class
+// So either xClass or oClass
 function checkWin(currentClass) {
     return winningCombinations.some(combination => {
         return combination.every(index => {

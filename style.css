@@ -55,6 +55,7 @@ h1 {
     cursor: pointer;
 }
 
+/* Any cell that has been already clicked will get this cursor */
 .cell.x,
 .cell.o {
     cursor: not-allowed;
@@ -63,11 +64,13 @@ h1 {
 
 /************************** X and O Mark STYLES **************************/
 /* X */
+/* Change color of X marker */
 .cell.x::before,
 .cell.x::after {
     background-color: var(--rose);
 }
 
+/* Change color of X marker when just hovering over cell */
 .board.x .cell:not(.x):not(.o):hover:before,
 .board.x .cell:not(.x):not(.o):hover:after {
     background-color: var(--white);
@@ -129,6 +132,7 @@ h1 {
 }
 
 /************************** WINNING MESSAGE STYLES **************************/
+/* Winning message background pop-up stlyes */
 .winning-message {
     display: none;
     position: fixed;
@@ -144,6 +148,7 @@ h1 {
     font-size: 5rem;
 }
 
+/* Style for when .show class has been added to div */
 .winning-message.show {
     display: flex;
 }
